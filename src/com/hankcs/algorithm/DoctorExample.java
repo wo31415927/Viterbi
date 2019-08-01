@@ -1,40 +1,50 @@
 package com.hankcs.algorithm;
 
-import static com.hankcs.algorithm.DoctorExample.Status.*;
-import static com.hankcs.algorithm.DoctorExample.Feel.*;
+import static com.hankcs.algorithm.DoctorExample.Feel.Cold;
+import static com.hankcs.algorithm.DoctorExample.Feel.Dizzy;
+import static com.hankcs.algorithm.DoctorExample.Feel.Normal;
+import static com.hankcs.algorithm.DoctorExample.Status.Fever;
+import static com.hankcs.algorithm.DoctorExample.Status.Healthy;
 
-public class DoctorExample
-{
-    enum Status
-    {
-        Healthy,
-        Fever,
-    }
-    enum Feel
-    {
-        normal,
-        cold,
-        dizzy,
-    }
-    static int[] states = new int[]{Healthy.ordinal(), Fever.ordinal()};
-    static int[] observations = new int[]{normal.ordinal(), cold.ordinal(), dizzy.ordinal()};
-    static double[] start_probability = new double[]{0.6, 0.4};
-    static double[][] transititon_probability = new double[][]{
-            {0.7, 0.3},
-            {0.4, 0.6},
-    };
-    static double[][] emission_probability = new double[][]{
-            {0.5, 0.4, 0.1},
-            {0.1, 0.3, 0.6},
-    };
+/** @author Administrator */
+public class DoctorExample {
+  enum Status {
+    /** 健康 */
+    Healthy,
+    /** 发烧 */
+    Fever
+  }
 
-    public static void main(String[] args)
-    {
-        int[] result = Viterbi.compute(observations, states, start_probability, transititon_probability, emission_probability);
-        for (int r : result)
-        {
-            System.out.print(Status.values()[r] + " ");
-        }
-        System.out.println();
+  enum Feel {
+    /** 正常 */
+    Normal,
+    /** 冷 */
+    Cold,
+    /** 头晕 */
+    Dizzy,
+  }
+
+  public static void main(String[] args) {
+    int[] states = new int[] {Healthy.ordinal(), Fever.ordinal()};
+    int[] observations = new int[] {Normal.ordinal(), Cold.ordinal(), Dizzy.ordinal()};
+    double[] startProbability = new double[] {0.6, 0.4};
+    double[][] transitionProbability =
+        new double[][] {
+          {0.7, 0.3},
+          {0.4, 0.6},
+        };
+    double[][] emissionProbability =
+        new double[][] {
+          {0.5, 0.4, 0.1},
+          {0.1, 0.3, 0.6},
+        };
+    int[] result =
+        Viterbi.compute(
+            observations, states, startProbability, transitionProbability, emissionProbability);
+    // Healthy Healthy Fever
+    for (int r : result) {
+      System.out.print(Status.values()[r] + " ");
     }
+    System.out.println();
+  }
 }
